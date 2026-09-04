@@ -3,8 +3,8 @@
 Operational skills for the Bulqit platform, kept alongside the audit records that
 explain why each one works the way it does.
 
-These are Claude Code skills: a `SKILL.md` describing a procedure, plus the Python
-that carries it out. Each exists because the task it covers has a way of going
+These are Claude Code skills: a `SKILL.md` describing a procedure, plus the scripts
+that carry it out. Each exists because the task it covers has a way of going
 wrong quietly, and the write-ups in `docs/audits/` are the record of it going wrong.
 
 ## Layout
@@ -40,6 +40,12 @@ is already live for the other.
 **`twilio-pool-numbers`** buys and moves Twilio masking-pool numbers. Binding
 uniqueness is account-wide rather than per-service, so two environments cannot share
 a number.
+
+**`merge-train`** walks your open PRs into `development` to merge, oldest first, one
+at a time. `packages/database/migrate.js` selects pending migrations by
+`entry.when > MAX(created_at)` rather than by index, so a migration renumbered off a
+collision without a fresh `when` sits below the high-water mark and is silently never
+applied. User-invoked only, and the user does every merge.
 
 ## Direction is decided by checkpoint, never by timestamp
 
